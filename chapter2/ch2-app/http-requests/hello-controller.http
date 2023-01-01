@@ -1,0 +1,4 @@
+GET http://localhost:8080/hello?name={{name}}
+Accept: application/json
+Authorization: Basic {{username}} {{password}}
+
