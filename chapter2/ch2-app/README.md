@@ -9,7 +9,7 @@ curl -u user:psw http://localhost:8080/hello
 
 Or run the [hello-controller.http](http-requests/hello-controller.http) requests with the [http-client.env.json](http-requests/http-client.env.json)
 
-![main_components.png](../pics/main_components.png)
+![main_components.png](pics/main_components.png)
 
 
 ## Setting up https
