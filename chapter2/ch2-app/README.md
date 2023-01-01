@@ -14,8 +14,10 @@ Or run the [hello-controller.http](http-requests/hello-controller.http) requests
 
 ## Setting up https
 
-1. Generate a self signed certificate
+Note for me: When asked for a password use a dummy password, not an actual password, because it will get exposed on git 
+
+1. Generate a certificate and a signing key
     `winpty openssl req -newkey rsa:2048 -x509 -keyout key.pem -out cert.pem -days 365`
 
-2. Continue with signing the certificate
+2. Sign the certificate
     `winpty openssl pkcs12 -export -in cert.pem -inkey key.pem -out certificate.p12 -name "certificate"`
