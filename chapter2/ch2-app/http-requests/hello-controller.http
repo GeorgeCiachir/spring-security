@@ -1,4 +1,11 @@
-GET http://localhost:8080/hello?name={{name}}
+# https
+GET https://localhost:{{https_port}}/hello?name={{name}}
+Accept: application/json
+Authorization: Basic {{username}} {{password}}
+
+###
+# http
+GET http://localhost:{{http_port}}/hello?name={{name}}
 Accept: application/json
 Authorization: Basic {{username}} {{password}}
 

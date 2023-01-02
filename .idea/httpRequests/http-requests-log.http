@@ -1,0 +1,32 @@
+GET https://localhost:443/hello?name=George
+Authorization: Basic user 8d909d9e-f429-49b8-8be0-a37ebd0fe712
+Accept: application/json
+
+<> 2023-01-02T063742.200.json
+
+###
+
+GET https://localhost:443/hello?name=George
+Authorization: Basic user 8d909d9e-f429-49b8-8be0-a37ebd0fe712
+Accept: application/json
+
+<> 2023-01-02T063737.200.json
+
+###
+
+GET http://localhost:443/hello?name=George
+Authorization: Basic user 8d909d9e-f429-49b8-8be0-a37ebd0fe712
+Accept: application/json
+
+<> 2023-01-02T063705.400.txt
+
+###
+
+GET http://localhost:443/hello?name=George
+Authorization: Basic user 8d909d9e-f429-49b8-8be0-a37ebd0fe712
+Accept: application/json
+
+<> 2023-01-02T063649.400.txt
+
+###
+
