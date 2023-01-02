@@ -21,16 +21,13 @@ public class SecurityConfigOld extends WebSecurityConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // choose one version. The customAuthenticationProvider uses the same userDetailsService and passwordEncoder
+        // You can either inject the customAuthenticationProvider, the userDetailsService and the passwordEncoder,
+        // and manually set them here, or let Spring discover and use the beans
 
-        // 1
-         auth.userDetailsService(userDetailsService)
-                 .passwordEncoder(passwordEncoder);
-
-        // 2
+        // auth.userDetailsService(userDetailsService)
+        //         .passwordEncoder(passwordEncoder);
         // auth.authenticationProvider(customAuthenticationProvider);
     }
 
