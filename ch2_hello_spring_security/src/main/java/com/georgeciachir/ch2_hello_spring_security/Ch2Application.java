@@ -1,4 +1,4 @@
-package com.example.ch2app;
+package com.georgeciachir.ch2_hello_spring_security;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

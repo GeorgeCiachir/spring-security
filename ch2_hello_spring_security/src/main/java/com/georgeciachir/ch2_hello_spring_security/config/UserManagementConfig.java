@@ -1,4 +1,4 @@
-package com.example.ch2app.config;
+package com.georgeciachir.ch2_hello_spring_security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

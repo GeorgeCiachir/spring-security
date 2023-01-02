@@ -1,4 +1,4 @@
-package com.example.ch2app.controller;
+package com.georgeciachir.ch2_hello_spring_security.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
