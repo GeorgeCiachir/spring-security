@@ -1,22 +1,27 @@
 package com.georgeciachir.ch3_managing_users.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 
-@Profile("securityCfgOld")
+@Profile("securityCfgNew")
+@EnableWebSecurity
 @Configuration
-public class SecurityConfigOld extends WebSecurityConfigurerAdapter {
+public class SecurityConfigNew {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         configureAccessForH2DB(http);
 
         http.httpBasic()
                 .and()
                 .authorizeRequests()
                 .anyRequest().authenticated();
+
+        return http.build();
     }
 
     private void configureAccessForH2DB(HttpSecurity http) throws Exception {
