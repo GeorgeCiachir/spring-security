@@ -23,12 +23,17 @@ public class SecurityConfigOld extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // You can either inject the customAuthenticationProvider, the userDetailsService and the passwordEncoder,
-        // and manually set them here, or let Spring discover and use the beans
+        // With this config class enabled by the Spring profile, you can:
+        //
+        // 1. set the userDetailsService and the passwordEncoder, and the framework will use the DaoAuthenticationProvider for auth
+        // 2. set the customAuthenticationProvider on the AuthenticationManagerBuilder and this auth provider will be used for auth
+        // 3. set all of them (customAuthenticationProvider, userDetailsService, passwordEncoder) and the framework
+        //    will use both the customAuthenticationProvider and the DaoAuthenticationProvider. If one of them returns
+        //    a valid Authentication, the other one will be skipped
 
-        // auth.userDetailsService(userDetailsService)
-        //         .passwordEncoder(passwordEncoder);
-        // auth.authenticationProvider(customAuthenticationProvider);
+//         auth.userDetailsService(userDetailsService)
+//                 .passwordEncoder(passwordEncoder);
+         auth.authenticationProvider(customAuthenticationProvider);
     }
 
     @Override
