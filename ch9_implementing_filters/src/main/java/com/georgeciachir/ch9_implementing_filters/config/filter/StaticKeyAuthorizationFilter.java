@@ -6,24 +6,29 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 @Component
-public class AuthenticationLoggingFilter implements Filter {
+public class StaticKeyAuthorizationFilter implements Filter {
 
-    private static final Logger LOG = Logger.getLogger(AuthenticationLoggingFilter.class.getName());
+    @Value("${authorization.key}")
+    private String authorizationKey;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        String requestId = request.getHeader("request-id");
+        String authentication = request.getHeader("Authorization");
 
-        LOG.info("Successfully authenticated request with id: " + requestId);
-
-        filterChain.doFilter(servletRequest, servletResponse);
+        if (authorizationKey.equals(authentication)) {
+            filterChain.doFilter(servletRequest, servletResponse);
+        } else {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        }
     }
 }

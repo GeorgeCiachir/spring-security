@@ -7,9 +7,11 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Component
 public class RequestValidatorFilter implements Filter {
 
     // The ExpressionUrlAuthorizationConfigurer has been deprecated, which means that the authorizeRequests() method on the HttpSecurity
