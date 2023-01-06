@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>com.georgeciachir</groupId>
-    <artifactId>ch7_configuring_authorization</artifactId>
+    <artifactId>ch7_configuring_authorization_restricting_access</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>

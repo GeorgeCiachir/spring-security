@@ -1,4 +1,4 @@
-package com.georgeciachir.ch7_configuring_authorization;
+package com.georgeciachir.ch7_configuring_authorization_restricting_access;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
