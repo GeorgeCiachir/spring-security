@@ -1,32 +1,27 @@
 package com.georgeciachir.ch9_implementing_filters.config.filter;
 
-import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-public class StaticKeyAuthorizationFilter implements Filter {
+@Component
+public class StaticKeyAuthorizationFilter extends OncePerRequestFilter {
 
+    @Value("${authorization.key}")
     private String authorizationKey;
 
-    public StaticKeyAuthorizationFilter(String authorizationKey) {
-        this.authorizationKey = authorizationKey;
-    }
-
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
-
+    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         String authentication = request.getHeader("Authorization");
 
         if (authorizationKey.equals(authentication)) {
-            filterChain.doFilter(servletRequest, servletResponse);
+            filterChain.doFilter(request, response);
         } else {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }

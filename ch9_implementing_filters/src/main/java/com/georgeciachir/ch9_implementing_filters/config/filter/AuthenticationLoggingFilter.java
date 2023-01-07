@@ -1,27 +1,26 @@
 package com.georgeciachir.ch9_implementing_filters.config.filter;
 
-import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.logging.Logger;
 
-public class AuthenticationLoggingFilter implements Filter {
+@Component
+public class AuthenticationLoggingFilter extends OncePerRequestFilter {
 
     private static final Logger LOG = Logger.getLogger(AuthenticationLoggingFilter.class.getName());
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-
+    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         String requestId = request.getHeader("request-id");
 
         LOG.info("Successfully authenticated request with id: " + requestId);
 
-        filterChain.doFilter(servletRequest, servletResponse);
+        filterChain.doFilter(request, response);
     }
 }

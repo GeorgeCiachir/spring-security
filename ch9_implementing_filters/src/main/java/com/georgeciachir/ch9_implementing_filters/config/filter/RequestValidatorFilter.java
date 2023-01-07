@@ -1,16 +1,16 @@
 package com.georgeciachir.ch9_implementing_filters.config.filter;
 
-import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-public class RequestValidatorFilter implements Filter {
+@Component
+public class RequestValidatorFilter extends OncePerRequestFilter {
 
     // The ExpressionUrlAuthorizationConfigurer has been deprecated, which means that the authorizeRequests() method on the HttpSecurity
     // object has also been deprecated. The ExpressionUrlAuthorizationConfigurer had the option to permit access based on
@@ -20,10 +20,7 @@ public class RequestValidatorFilter implements Filter {
 
     // We could use this filter to do what we should no longer do with the ExpressionUrlAuthorizationConfigurer
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
-
+    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         String requestId = request.getHeader("request-id");
 
         if (requestId == null || requestId.isBlank()) {
