@@ -28,7 +28,7 @@ public class SecurityConfigNew {
                 .addFilterBefore(requestValidatorFilter, BasicAuthenticationFilter.class)
                 .addFilterAfter(authenticationLoggingFilter, BasicAuthenticationFilter.class)
                 // If multiple filters are at the same position, the order in which they are called is not defined
-                // note that in this, case I haven't enabled the BasicAuthenticationFilter because I haven't called the http.httpBasic() method
+                // note that in this case I haven't enabled the BasicAuthenticationFilter because I haven't called the http.httpBasic() method
 
                 // If http.httpBasic() is called, then both StaticKeyAuthorizationFilter and BasicAuthenticationFilter would be at the same
                 // position and there is no way to tell in which order they are called
