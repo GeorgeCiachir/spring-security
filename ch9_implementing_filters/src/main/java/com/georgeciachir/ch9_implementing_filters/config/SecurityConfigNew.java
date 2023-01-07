@@ -3,7 +3,8 @@ package com.georgeciachir.ch9_implementing_filters.config;
 import com.georgeciachir.ch9_implementing_filters.config.filter.AuthenticationLoggingFilter;
 import com.georgeciachir.ch9_implementing_filters.config.filter.RequestValidatorFilter;
 import com.georgeciachir.ch9_implementing_filters.config.filter.StaticKeyAuthorizationFilter;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,12 +16,19 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @Configuration
 public class SecurityConfigNew {
 
-    @Autowired
     private RequestValidatorFilter requestValidatorFilter;
-    @Autowired
     private AuthenticationLoggingFilter authenticationLoggingFilter;
-    @Autowired
     private StaticKeyAuthorizationFilter staticKeyAuthorizationFilter;
+
+    @Value("${authorization.key}")
+    private String authorizationKey;
+
+    @PostConstruct
+    public void setUp() {
+        requestValidatorFilter = new RequestValidatorFilter();
+        authenticationLoggingFilter = new AuthenticationLoggingFilter();
+        staticKeyAuthorizationFilter = new StaticKeyAuthorizationFilter(authorizationKey);
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

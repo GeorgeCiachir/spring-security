@@ -7,16 +7,16 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-@Component
 public class StaticKeyAuthorizationFilter implements Filter {
 
-    @Value("${authorization.key}")
     private String authorizationKey;
+
+    public StaticKeyAuthorizationFilter(String authorizationKey) {
+        this.authorizationKey = authorizationKey;
+    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
