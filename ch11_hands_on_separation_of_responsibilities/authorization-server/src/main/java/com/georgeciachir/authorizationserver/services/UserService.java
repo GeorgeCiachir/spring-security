@@ -38,10 +38,10 @@ public class UserService {
                 });
     }
 
-    public boolean check(Otp otpToValidate) {
-        return otpRepository.findOtpByUsername(otpToValidate.getUsername())
+    public void validate(Otp otpToValidate) {
+        otpRepository.findOtpByUsername(otpToValidate.getUsername())
                 .filter(o -> otpToValidate.getCode().equals(o.getCode()))
-                .isPresent();
+                .orElseThrow(() -> new BadCredentialsException("Bad credentials."));
     }
 
     private void renewOtp(User u) {

@@ -27,10 +27,6 @@ public class AuthController {
 
     @PostMapping("/otp/check")
     public void check(@RequestBody Otp otp, HttpServletResponse response) {
-        if (userService.check(otp)) {
-            response.setStatus(HttpServletResponse.SC_OK);
-        } else {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        }
+        userService.validate(otp);
     }
 }
