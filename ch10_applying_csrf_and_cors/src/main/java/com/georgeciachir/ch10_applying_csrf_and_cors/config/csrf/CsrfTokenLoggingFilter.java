@@ -19,9 +19,13 @@ public class CsrfTokenLoggingFilter extends OncePerRequestFilter {
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         Object csrfAttribute = request.getAttribute("_csrf");
-        CsrfToken csrf = (CsrfToken) csrfAttribute;
 
-        LOG.info("CSRF token is: " + csrf.getToken());
+        // For the CORS example, the csrfAttribute is null because
+        // csrf is disabled and the csrf.getToken() throws NPE
+        if (csrfAttribute != null) {
+            CsrfToken csrf = (CsrfToken) csrfAttribute;
+            LOG.info("CSRF token is: " + csrf.getToken());
+        }
 
         filterChain.doFilter(request, response);
     }
