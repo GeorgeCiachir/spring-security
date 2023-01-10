@@ -35,7 +35,6 @@ public class LoginFilter extends OncePerRequestFilter {
         if (code == null) {
             UserNamePasswordAuthentication authentication = new UserNamePasswordAuthentication(username, password);
             authenticationManager.authenticate(authentication);
-            response.setHeader("Code", code);
         } else {
             OtpAuthentication authentication = new OtpAuthentication(username, code);
             Authentication authenticated = authenticationManager.authenticate(authentication);
