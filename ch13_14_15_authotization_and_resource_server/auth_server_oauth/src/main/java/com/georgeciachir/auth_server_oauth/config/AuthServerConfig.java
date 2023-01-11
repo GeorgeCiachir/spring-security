@@ -34,12 +34,10 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
         BaseClientDetails passwordGrantTypeClient = passwordGrantTypeClient();
         BaseClientDetails codeGrantTypeClient = codeGrantTypeClient();
-        BaseClientDetails refreshTokenGrantClient = refreshTokenGrantClient();
 
         clientDetailsService.setClientDetailsStore(
                 Map.of(passwordGrantTypeClient.getClientId(), passwordGrantTypeClient,
-                        codeGrantTypeClient.getClientId(), codeGrantTypeClient,
-                        refreshTokenGrantClient.getClientId(), refreshTokenGrantClient));
+                        codeGrantTypeClient.getClientId(), codeGrantTypeClient));
 
         clients.withClientDetails(clientDetailsService);
     }
@@ -49,7 +47,8 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
         clientDetails.setClientId("client_password_grant");
         clientDetails.setClientSecret("secret");
         clientDetails.setScope(List.of("read"));
-        clientDetails.setAuthorizedGrantTypes(List.of("password"));
+        // adding the refresh_token grant type ensure that a refresh token is also provided with the default auth token
+        clientDetails.setAuthorizedGrantTypes(List.of("password", "refresh_token"));
         return clientDetails;
     }
 
@@ -58,18 +57,9 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
         clientDetails.setClientId("client_code_grant");
         clientDetails.setClientSecret("secret");
         clientDetails.setScope(List.of("read"));
-        clientDetails.setAuthorizedGrantTypes(List.of("authorization_code"));
+        // adding the refresh_token grant type ensure that a refresh token is also provided with the default auth token
+        clientDetails.setAuthorizedGrantTypes(List.of("authorization_code", "refresh_token"));
         clientDetails.setRegisteredRedirectUri(Set.of("http://localhost:8080"));
-        return clientDetails;
-    }
-
-    private BaseClientDetails refreshTokenGrantClient() {
-        BaseClientDetails clientDetails = new BaseClientDetails();
-        clientDetails.setClientId("client_refresh_token_grant");
-        clientDetails.setClientSecret("secret");
-        clientDetails.setScope(List.of("read"));
-        clientDetails.setAuthorizedGrantTypes(List.of("refresh_token"));
-        clientDetails.setRegisteredRedirectUri(Set.of("http://localhost:80880"));
         return clientDetails;
     }
 }
