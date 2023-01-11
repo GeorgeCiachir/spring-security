@@ -1,0 +1,70 @@
+// @name Begin code flow
+GET http://localhost:8080/oauth/authorize?response_type={{code_type_client_response_type}}&client_id={{code_type_client_id}}&scope={{code_type_client_scope}}
+Accept: application/json
+
+> {%
+const csrf = response.body.match('value="(.*?)" />')[1];
+client.log('csrf is: ' +  csrf);
+client.global.set("csrf", csrf);
+
+ %}
+
+###
+// @name Login
+// @no-redirect
+POST http://localhost:8080/login
+Content-Type: application/x-www-form-urlencoded
+
+username={{username}}&password={{password}}&_csrf={{csrf}}
+
+###
+
+// @name After login you get redirected here
+// @no-redirect
+GET http://localhost:8080/oauth/authorize?response_type={{code_type_client_response_type}}&client_id={{code_type_client_id}}&scope={{code_type_client_scope}}
+
+> {%
+const csrf2 = response.body.match('name="_csrf" value="(.*?)" />')[1];
+client.log('csrf is: ' +  csrf2);
+client.global.set("csrf2", csrf2);
+ %}
+
+###
+
+// @name Authorize the client
+// @no-redirect
+POST http://localhost:8080/oauth/authorize
+Content-Type: application/x-www-form-urlencoded
+
+user_oauth_approval=true&_csrf={{csrf2}}&scope.read=true&authorize=Authorize
+
+> {%
+const location = response.headers.valueOf("Location");
+const code = location.match("code=(.*)")[1];
+client.log('code is: ' +  code);
+client.global.set("code", code);
+ %}
+
+###
+
+// @name The client now requests the access token
+POST http://localhost:8080/oauth/token?grant_type={{code_type_client_grant_type}}&scope=read&code={{code}}
+Authorization: Basic {{code_type_client_id}} {{code_type_client_password}}
+
+> {%
+const accessToken = response.body.access_token;
+ client.log('accessToken is: ' +  accessToken);
+ %}
+
+###
+
+// @name If the client is already authorized, it can get a new code each time it requests it
+// @no-redirect
+GET http://localhost:8080/oauth/authorize?response_type={{code_type_client_response_type}}&client_id={{code_type_client_id}}&scope={{code_type_client_scope}}
+
+> {%
+const location = response.headers.valueOf("Location");
+const code = location.match("code=(.*)")[1];
+client.log('code is: ' +  code);
+client.global.set("code", code);
+ %}
