@@ -35,10 +35,12 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
         BaseClientDetails passwordGrantTypeClient = passwordGrantTypeClient();
         BaseClientDetails codeGrantTypeClient = codeGrantTypeClient();
+        BaseClientDetails resourceServerClient = resourceServerClient();
 
         clientDetailsService.setClientDetailsStore(
                 Map.of(passwordGrantTypeClient.getClientId(), passwordGrantTypeClient,
-                        codeGrantTypeClient.getClientId(), codeGrantTypeClient));
+                        codeGrantTypeClient.getClientId(), codeGrantTypeClient,
+                        resourceServerClient.getClientId(), resourceServerClient));
 
         clients.withClientDetails(clientDetailsService);
     }
@@ -52,6 +54,21 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
         // If we decide to use authentication for this endpoint, which most likely we should,
         // we also need to declare the resource server as a client for the authorization server
         security.checkTokenAccess("isAuthenticated()");
+    }
+
+    /**
+     * For the authorization server, the resource server is a client in the sense of a user that
+     * needs some info (check if the token is valid) and it is not involved in the token issuing process.
+     * <p>
+     * I could have even removed the need for declaring this client details, but then I would need to add the
+     * "permitAll()" level of authorization on the "oauth/check_token" endpoint
+     * in the {@link #configure(AuthorizationServerSecurityConfigurer)}
+     */
+    private BaseClientDetails resourceServerClient() {
+        BaseClientDetails clientDetails = new BaseClientDetails();
+        clientDetails.setClientId("resourceServer");
+        clientDetails.setClientSecret("resourceServerSecret");
+        return clientDetails;
     }
 
     private BaseClientDetails passwordGrantTypeClient() {
