@@ -53,7 +53,8 @@ Authorization: Basic {{code_type_client_id}} {{code_type_client_password}}
 
 > {%
 const accessToken = response.body.access_token;
- client.log('accessToken is: ' +  accessToken);
+client.log('accessToken is: ' +  accessToken);
+client.global.set("accessToken", accessToken);
  %}
 
 ###
@@ -68,3 +69,8 @@ const code = location.match("code=(.*)")[1];
 client.log('code is: ' +  code);
 client.global.set("code", code);
  %}
+
+###
+
+POST http://localhost:8080/oauth/check_token?token={{accessToken}}
+Authorization: Basic {{code_type_client_id}} {{code_type_client_password}}

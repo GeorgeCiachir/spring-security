@@ -7,6 +7,7 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.security.oauth2.provider.client.InMemoryClientDetailsService;
 
@@ -40,6 +41,17 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
                         codeGrantTypeClient.getClientId(), codeGrantTypeClient));
 
         clients.withClientDetails(clientDetailsService);
+    }
+
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer security) {
+        // Ideally, isAuthenticated() should be used, so that the resource
+        // server is also authenticated when checking the token,
+        // but permitAll() it's faster for experimenting
+
+        // If we decide to use authentication for this endpoint, which most likely we should,
+        // we also need to declare the resource server as a client for the authorization server
+        security.checkTokenAccess("isAuthenticated()");
     }
 
     private BaseClientDetails passwordGrantTypeClient() {
