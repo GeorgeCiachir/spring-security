@@ -1,0 +1,4 @@
+# First obtain a token using one of the flows in the other files: authorization_server_code_grant_type.http or authorization_server_password_grant_type.http
+
+GET http://localhost:{{resourceServerPort}}/hello
+Authorization: Bearer {{accessToken}}

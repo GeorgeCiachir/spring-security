@@ -1,5 +1,5 @@
 // @name Begin code flow
-GET http://localhost:8080/oauth/authorize?response_type={{code_type_client_response_type}}&client_id={{code_type_client_id}}&scope={{code_type_client_scope}}
+GET http://localhost:{{authServerPort}}/oauth/authorize?response_type={{code_type_client_response_type}}&client_id={{code_type_client_id}}&scope={{code_type_client_scope}}
 Accept: application/json
 
 > {%
@@ -12,7 +12,7 @@ client.global.set("csrf", csrf);
 ###
 // @name Login
 // @no-redirect
-POST http://localhost:8080/login
+POST http://localhost:{{authServerPort}}/login
 Content-Type: application/x-www-form-urlencoded
 
 username={{username}}&password={{password}}&_csrf={{csrf}}
@@ -21,7 +21,7 @@ username={{username}}&password={{password}}&_csrf={{csrf}}
 
 // @name After login you get redirected here
 // @no-redirect
-GET http://localhost:8080/oauth/authorize?response_type={{code_type_client_response_type}}&client_id={{code_type_client_id}}&scope={{code_type_client_scope}}
+GET http://localhost:{{authServerPort}}/oauth/authorize?response_type={{code_type_client_response_type}}&client_id={{code_type_client_id}}&scope={{code_type_client_scope}}
 
 > {%
 const csrf2 = response.body.match('name="_csrf" value="(.*?)" />')[1];
@@ -33,7 +33,7 @@ client.global.set("csrf2", csrf2);
 
 // @name Authorize the client
 // @no-redirect
-POST http://localhost:8080/oauth/authorize
+POST http://localhost:{{authServerPort}}/oauth/authorize
 Content-Type: application/x-www-form-urlencoded
 
 user_oauth_approval=true&_csrf={{csrf2}}&scope.read=true&authorize=Authorize
@@ -48,7 +48,7 @@ client.global.set("code", code);
 ###
 
 // @name The client now requests the access token
-POST http://localhost:8080/oauth/token?grant_type={{code_type_client_grant_type}}&scope=read&code={{code}}
+POST http://localhost:{{authServerPort}}/oauth/token?grant_type={{code_type_client_grant_type}}&scope=read&code={{code}}
 Authorization: Basic {{code_type_client_id}} {{code_type_client_password}}
 
 > {%
@@ -61,7 +61,7 @@ client.global.set("accessToken", accessToken);
 
 // @name If the client is already authorized, it can get a new code each time it requests it
 // @no-redirect
-GET http://localhost:8080/oauth/authorize?response_type={{code_type_client_response_type}}&client_id={{code_type_client_id}}&scope={{code_type_client_scope}}
+GET http://localhost:{{authServerPort}}/oauth/authorize?response_type={{code_type_client_response_type}}&client_id={{code_type_client_id}}&scope={{code_type_client_scope}}
 
 > {%
 const location = response.headers.valueOf("Location");
@@ -72,5 +72,5 @@ client.global.set("code", code);
 
 ###
 
-POST http://localhost:8080/oauth/check_token?token={{accessToken}}
+POST http://localhost:{{authServerPort}}/oauth/check_token?token={{accessToken}}
 Authorization: Basic {{code_type_client_id}} {{code_type_client_password}}
