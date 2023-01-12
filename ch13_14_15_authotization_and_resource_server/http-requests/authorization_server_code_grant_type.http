@@ -74,3 +74,9 @@ client.global.set("code", code);
 
 POST http://localhost:{{authServerPort}}/oauth/check_token?token={{accessToken}}
 Authorization: Basic {{code_type_client_id}} {{code_type_client_password}}
+
+> {%
+const accessToken = response.body.access_token;
+client.log('accessToken is: ' +  accessToken);
+client.global.set("accessToken", accessToken);
+ %}
