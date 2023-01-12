@@ -10,7 +10,9 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.security.oauth2.provider.client.InMemoryClientDetailsService;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,9 +24,13 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private DataSource dataSource;
+
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-        endpoints.authenticationManager(authenticationManager);
+        endpoints.authenticationManager(authenticationManager)
+                .tokenStore(new JdbcTokenStore(dataSource));
     }
 
     @Override
@@ -61,7 +67,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
      * needs some info (check if the token is valid) and it is not involved in the token issuing process.
      * <p>
      * I could have even removed the need for declaring this client details, but then I would need to add the
-     * "permitAll()" level of authorization on the "oauth/check_token" endpoint
+     * "permitAll()" level of authorization on the "/oauth/check_token" endpoint
      * in the {@link #configure(AuthorizationServerSecurityConfigurer)}
      */
     private BaseClientDetails resourceServerClient() {
