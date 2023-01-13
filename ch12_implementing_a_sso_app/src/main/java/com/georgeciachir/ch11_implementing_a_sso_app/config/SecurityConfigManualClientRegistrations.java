@@ -64,9 +64,9 @@ public class SecurityConfigManualClientRegistrations {
     // This is the same as the manualGithubClientRegistration, and it is used as an example on hot to set
     private ClientRegistration commonGithubClientRegistration() {
         return CommonOAuth2Provider.GITHUB
-                .getBuilder(githubClientSecret) // whatever id you want. just has to be unique
+                .getBuilder("githubDefault") // whatever id you want. just has to be unique
                 .clientId(githubClientId)
-                .clientSecret("c6067504a0d51d770766ddd8d929b57976ceb036")
+                .clientSecret(githubClientSecret)
                 .build();
     }
 }
