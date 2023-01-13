@@ -21,10 +21,10 @@ import java.util.List;
 public class SecurityConfigManualClientRegistrations {
 
     @Value("${security.manual.client.registration.clientId}")
-    private String clientId;
+    private String githubClientId;
 
     @Value("${security.manual.client.registration.clientSecret}")
-    private String clientSecret;
+    private String githubClientSecret;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -48,8 +48,8 @@ public class SecurityConfigManualClientRegistrations {
     // This is the same as the commonGithubClientRegistration, and it is used as an example on hot to set
     private ClientRegistration manualGithubClientRegistration() {
         return ClientRegistration.withRegistrationId("githubManual") // whatever id you want. just has to be unique
-                .clientId(clientId)
-                .clientSecret(clientSecret)
+                .clientId(githubClientId)
+                .clientSecret(githubClientSecret)
                 .scope("read:user")
                 .authorizationUri("https://github.com/login/oauth/authorize")
                 .tokenUri("https://github.com/login/oauth/access_token")
@@ -64,8 +64,8 @@ public class SecurityConfigManualClientRegistrations {
     // This is the same as the manualGithubClientRegistration, and it is used as an example on hot to set
     private ClientRegistration commonGithubClientRegistration() {
         return CommonOAuth2Provider.GITHUB
-                .getBuilder(clientSecret) // whatever id you want. just has to be unique
-                .clientId(clientId)
+                .getBuilder(githubClientSecret) // whatever id you want. just has to be unique
+                .clientId(githubClientId)
                 .clientSecret("c6067504a0d51d770766ddd8d929b57976ceb036")
                 .build();
     }
