@@ -17,7 +17,7 @@ import javax.sql.DataSource;
 @Profile("jdbc-token-store")
 @Configuration
 @EnableAuthorizationServer
-public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
+public class JdbcTokenStoreAuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
     private AuthenticationManager authenticationManager;

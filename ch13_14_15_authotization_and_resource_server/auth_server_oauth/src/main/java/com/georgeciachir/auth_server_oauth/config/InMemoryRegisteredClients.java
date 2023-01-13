@@ -35,7 +35,7 @@ public class InMemoryRegisteredClients {
      * <p>
      * I could have even removed the need for declaring this client details, but then I would need to add the
      * "permitAll()" level of authorization on the "/oauth/check_token" endpoint
-     * in the {@link AuthServerConfig#configure(AuthorizationServerSecurityConfigurer)}
+     * in the {@link JdbcTokenStoreAuthServerConfig#configure(AuthorizationServerSecurityConfigurer)}
      */
     private BaseClientDetails resourceServerClient() {
         BaseClientDetails clientDetails = new BaseClientDetails();
