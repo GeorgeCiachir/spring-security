@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>com.georgeciachir</groupId>
-    <artifactId>ch11_implementing_a_sso_app</artifactId>
+    <artifactId>ch12_implementing_a_sso_app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
