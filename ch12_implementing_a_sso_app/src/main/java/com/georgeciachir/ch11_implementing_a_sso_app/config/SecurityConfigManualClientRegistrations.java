@@ -50,7 +50,9 @@ public class SecurityConfigManualClientRegistrations {
         return ClientRegistration.withRegistrationId("githubManual") // whatever id you want. just has to be unique
                 .clientId(githubClientId)
                 .clientSecret(githubClientSecret)
-                .scope("read:user")
+                // If this line is uncommented, this app will also have the right to read some personal data.
+                // If left commented, only public info is available
+//                .scope("read:user")
                 .authorizationUri("https://github.com/login/oauth/authorize")
                 .tokenUri("https://github.com/login/oauth/access_token")
                 .userInfoUri("https://api.github.com/user")
@@ -64,6 +66,7 @@ public class SecurityConfigManualClientRegistrations {
     // This is the same as the manualGithubClientRegistration, and it is used as an example on hot to set
     private ClientRegistration commonGithubClientRegistration() {
         return CommonOAuth2Provider.GITHUB
+                // The default scope is "read:user"
                 .getBuilder("githubDefault") // whatever id you want. just has to be unique
                 .clientId(githubClientId)
                 .clientSecret(githubClientSecret)
