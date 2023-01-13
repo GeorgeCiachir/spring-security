@@ -1,4 +1,4 @@
-package com.georgeciachir.auth_server_oauth.config;
+package com.georgeciachir.auth_server_oauth.config.authserver;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

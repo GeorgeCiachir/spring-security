@@ -1,4 +1,4 @@
-package com.georgeciachir.auth_server_oauth.config;
+package com.georgeciachir.auth_server_oauth.config.authserver;
 
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
@@ -35,7 +35,8 @@ public class InMemoryRegisteredClients {
      * <p>
      * I could have even removed the need for declaring this client details, but then I would need to add the
      * "permitAll()" level of authorization on the "/oauth/check_token" endpoint
-     * in the {@link JdbcTokenStoreAuthServerConfig#configure(AuthorizationServerSecurityConfigurer)}
+     * in the {@link JdbcTokenStoreAuthServerConfig#configure(AuthorizationServerSecurityConfigurer)} and
+     * in the {@link JwtSymmetricKeyAuthServerConfig#configure(AuthorizationServerSecurityConfigurer)}
      */
     private BaseClientDetails resourceServerClient() {
         BaseClientDetails clientDetails = new BaseClientDetails();
