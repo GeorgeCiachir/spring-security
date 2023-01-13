@@ -19,7 +19,7 @@ username={{username}}&password={{password}}&_csrf={{csrf}}
 
 ###
 
-// @name After login you get redirected here
+// @name After login you get redirected to the initial request url
 // @no-redirect
 GET http://localhost:{{authServerPort}}/oauth/authorize?response_type={{code_type_client_response_type}}&client_id={{code_type_client_id}}&scope={{code_type_client_scope}}
 
