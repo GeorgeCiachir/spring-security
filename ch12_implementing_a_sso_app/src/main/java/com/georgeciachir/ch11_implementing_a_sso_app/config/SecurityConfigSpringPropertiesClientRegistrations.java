@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Profile("spring_properties_manual_client_registration")
+@Profile("spring_properties_client_registration")
 @EnableWebSecurity
 @Configuration
 public class SecurityConfigSpringPropertiesClientRegistrations {
