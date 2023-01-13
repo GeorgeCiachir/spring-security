@@ -1,4 +1,4 @@
-package com.georgeciachir.ch11_implementing_a_sso_app.config;
+package com.georgeciachir.ch12_implementing_a_sso_app.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

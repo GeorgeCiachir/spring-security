@@ -1,4 +1,4 @@
-package com.georgeciachir.ch11_implementing_a_sso_app.controller;
+package com.georgeciachir.ch12_implementing_a_sso_app.controller;
 
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
