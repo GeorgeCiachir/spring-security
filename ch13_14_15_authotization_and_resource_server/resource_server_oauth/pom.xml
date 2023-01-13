@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>com.georgeciachir</groupId>
-    <artifactId>resource_server_oauth</artifactId>
+    <artifactId>ch13-14-15-resource-server-oauth</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
