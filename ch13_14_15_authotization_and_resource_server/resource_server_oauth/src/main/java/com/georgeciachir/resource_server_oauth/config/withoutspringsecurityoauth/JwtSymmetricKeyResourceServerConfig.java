@@ -1,0 +1,41 @@
+package com.georgeciachir.resource_server_oauth.config.withoutspringsecurityoauth;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
+@ConditionalOnProperty(value = "configuration.mode", havingValue = "no-spring-security-oauth")
+@Profile("jwt-symmetric-key-token-store")
+@Configuration
+public class JwtSymmetricKeyResourceServerConfig extends WebSecurityConfigurerAdapter {
+
+    @Value("${jwt.symmetric.key}")
+    private String jwtSymmetricKey;
+
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .anyRequest().authenticated()
+                .and()
+                .oauth2ResourceServer(
+                        serverConfigurer -> serverConfigurer.jwt(
+                                jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())
+                        ));
+    }
+
+    @Bean
+    public JwtDecoder jwtDecoder() {
+        byte[] key = jwtSymmetricKey.getBytes();
+        SecretKey originalKey = new SecretKeySpec(key, 0, key.length, "AES");
+        return NimbusJwtDecoder.withSecretKey(originalKey).build();
+    }
+}
