@@ -11,7 +11,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
-@Profile("jwt-symmetric-key-token-store")
+@Profile({"with-spring-security-oauth", "jwt-symmetric-key-token-store"})
 @Configuration
 @EnableResourceServer
 public class JwtSymmetricKeyResourceServerConfig extends ResourceServerConfigurerAdapter {

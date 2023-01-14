@@ -12,7 +12,7 @@ import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
 import javax.sql.DataSource;
 
-@Profile("token-store-config")
+@Profile({"with-spring-security-oauth", "token-store-config"})
 @EnableResourceServer
 @Configuration
 public class TokenStoreResourceServerConfig extends ResourceServerConfigurerAdapter {
