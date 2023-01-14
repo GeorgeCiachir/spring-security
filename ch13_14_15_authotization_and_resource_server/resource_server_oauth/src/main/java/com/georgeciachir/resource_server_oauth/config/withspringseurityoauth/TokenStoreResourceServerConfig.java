@@ -1,6 +1,7 @@
 package com.georgeciachir.resource_server_oauth.config.withspringseurityoauth;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -12,7 +13,8 @@ import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
 import javax.sql.DataSource;
 
-@Profile({"with-spring-security-oauth", "token-store-config"})
+@ConditionalOnProperty(value = "configuration.mode", havingValue = "with-spring-security-oauth")
+@Profile("token-store-config")
 @EnableResourceServer
 @Configuration
 public class TokenStoreResourceServerConfig extends ResourceServerConfigurerAdapter {
