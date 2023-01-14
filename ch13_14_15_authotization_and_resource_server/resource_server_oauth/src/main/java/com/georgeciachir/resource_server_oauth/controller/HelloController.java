@@ -17,13 +17,13 @@ import static java.util.stream.Collectors.toList;
 public class HelloController {
 
     @GetMapping("/hello")
-    public String hello(OAuth2Authentication auth2Authentication) {
+    public String hello() {
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
 
         Object toDisplay;
         if (authentication instanceof OAuth2Authentication) {
-            OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) auth2Authentication.getDetails();
+            OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) authentication.getDetails();
             toDisplay = details.getDecodedDetails();
         } else {
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
