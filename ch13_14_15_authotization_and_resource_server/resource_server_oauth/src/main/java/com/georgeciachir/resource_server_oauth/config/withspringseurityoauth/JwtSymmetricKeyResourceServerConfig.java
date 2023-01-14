@@ -1,4 +1,4 @@
-package com.georgeciachir.resource_server_oauth.config;
+package com.georgeciachir.resource_server_oauth.config.withspringseurityoauth;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

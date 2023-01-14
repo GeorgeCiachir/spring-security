@@ -1,4 +1,4 @@
-package com.georgeciachir.resource_server_oauth.config;
+package com.georgeciachir.resource_server_oauth.config.withspringseurityoauth;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
