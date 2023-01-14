@@ -11,7 +11,7 @@ For the `jwt-symmetric-key-token-store` profile you need a symmetric (and privat
 ## Create a pair of private-public keys
 
 1. Create private key
-   `keytool -genkeypair -alias ssia -keyalg RSA -keypass ssia123 -keystore ssia.jks -storepass ssia123`
+   `keytool -genkeypair -alias chapter_13_14_15_key -keyalg RSA -keypass the_key_passowrd -keystore chapter_13_14_15_key.jks -storepass the_store_password`
 
 2. Create public key from the previously created private key
-   `keytool -list -rfc --keystore ssia.jks | openssl x509 -inform pem -pubkey`
+   `keytool -list -rfc --keystore chapter_13_14_15_key.jks | openssl x509 -inform pem -pubkey`
