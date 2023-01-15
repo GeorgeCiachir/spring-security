@@ -40,6 +40,11 @@ public class JwtAsymmetricKeyAuthServerConfig extends WebSecurityConfigurerAdapt
                         ));
     }
 
+    /**
+     * Because this implementation does not rely on Oauth2 and is a just a jwt configuration, for a jwt that
+     * can essentially contain anything, the framework couldn't now whatever custom value I use for the
+     * username claim, so I must specify it.
+     */
     private JwtAuthenticationConverter customAuthConverter() {
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
         converter.setPrincipalClaimName("user_name");
