@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -28,8 +29,16 @@ public class JwtSymmetricKeyResourceServerConfig extends WebSecurityConfigurerAd
                 .and()
                 .oauth2ResourceServer(
                         serverConfigurer -> serverConfigurer.jwt(
-                                jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())
+                                jwtConfigurer -> jwtConfigurer
+                                        .decoder(jwtDecoder())
+                                        .jwtAuthenticationConverter(customAuthConverter())
                         ));
+    }
+
+    private JwtAuthenticationConverter customAuthConverter() {
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        converter.setPrincipalClaimName("user_name");
+        return converter;
     }
 
     @Bean
