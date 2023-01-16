@@ -33,5 +33,6 @@ public class BaseAuthServerConfig extends AuthorizationServerConfigurerAdapter {
         // If we decide to use authentication for this endpoint, which most likely we should,
         // we also need to declare the resource server as a client for the authorization server
         security.checkTokenAccess("isAuthenticated()");
+        security.tokenKeyAccess("isAuthenticated()");
     }
 }

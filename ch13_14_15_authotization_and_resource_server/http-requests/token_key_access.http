@@ -1,0 +1,2 @@
+GET http://localhost:{{authServerPort}}/oauth/token_key
+Authorization: Basic {{password_type_client_id}} {{password_type_client_password}}
