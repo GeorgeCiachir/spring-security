@@ -1,4 +1,4 @@
-package com.georgeciachir.auth_server_oauth.config.authserver;
+package com.georgeciachir.auth_server_oauth.config.authserver.jwtbasedauthconfig;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

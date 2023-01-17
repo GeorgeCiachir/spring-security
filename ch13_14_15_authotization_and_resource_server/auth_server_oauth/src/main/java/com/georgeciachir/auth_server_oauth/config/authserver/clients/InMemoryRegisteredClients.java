@@ -1,5 +1,7 @@
-package com.georgeciachir.auth_server_oauth.config.authserver;
+package com.georgeciachir.auth_server_oauth.config.authserver.clients;
 
+import com.georgeciachir.auth_server_oauth.config.authserver.jdbcauthconfig.JdbcTokenStoreAuthServerConfig;
+import com.georgeciachir.auth_server_oauth.config.authserver.jwtbasedauthconfig.JwtSymmetricKeyAuthServerConfig;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.stereotype.Component;

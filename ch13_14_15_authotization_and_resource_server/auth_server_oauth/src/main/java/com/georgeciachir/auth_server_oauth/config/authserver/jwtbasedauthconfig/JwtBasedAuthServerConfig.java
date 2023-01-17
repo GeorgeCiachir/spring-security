@@ -1,5 +1,6 @@
-package com.georgeciachir.auth_server_oauth.config.authserver;
+package com.georgeciachir.auth_server_oauth.config.authserver.jwtbasedauthconfig;
 
+import com.georgeciachir.auth_server_oauth.config.authserver.BaseAuthServerConfig;
 import com.georgeciachir.auth_server_oauth.config.authserver.tokenenhancers.TimeZoneTokenEnhancer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
