@@ -1,5 +1,6 @@
 package com.georgeciachir.resource_server_oauth.config.withspringseurityoauth;
 
+import com.georgeciachir.resource_server_oauth.config.withspringseurityoauth.tokenconverters.AdditionalClaimsAccessTokenConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -39,7 +40,7 @@ public class JwtAsymmetricKeyAuthServerConfig extends ResourceServerConfigurerAd
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         String publicKeyValue = readPublicKey();
 
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        JwtAccessTokenConverter converter = new AdditionalClaimsAccessTokenConverter();
         converter.setVerifierKey(publicKeyValue);
         return converter;
     }
