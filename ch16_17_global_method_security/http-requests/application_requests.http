@@ -1,0 +1,45 @@
+POST http://localhost:8080/products
+Content-Type: application/json
+Authorization: Basic Jane 1234
+
+{
+    "name": "Chocolate",
+    "price": 2,
+    "owner": "John"
+}
+
+###
+
+DELETE http://localhost:8080/products/2
+Authorization: Basic Alex 1234
+
+###
+
+PATCH http://localhost:8080/products/2?price=12
+Authorization: Basic Jane 1234
+
+###
+
+GET http://localhost:8080/products
+Authorization: Basic John 1234
+
+###
+
+GET http://localhost:8080/products/2
+Authorization: Basic Alex 1234
+
+###
+
+GET http://localhost:8080/products/my-products
+Authorization: Basic John 1234
+
+###
+
+GET http://localhost:8080/products/my-products/2
+Authorization: Basic Alex 1234
+
+###
+
+POST http://localhost:8080/products/sell?productIds=1
+Authorization: Basic John 1234
+
