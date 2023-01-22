@@ -44,7 +44,8 @@ public class SecurityConfigManualClientRegistrations {
     public ClientRegistrationRepository clientRegistrationRepository() {
         List<ClientRegistration> clientRegistrations = List.of(
                 keycloakClientRegistration(),
-                manualGithubClientRegistration());
+                manualGithubClientRegistration(),
+                commonGithubClientRegistration());
         return new InMemoryClientRegistrationRepository(clientRegistrations);
     }
 
