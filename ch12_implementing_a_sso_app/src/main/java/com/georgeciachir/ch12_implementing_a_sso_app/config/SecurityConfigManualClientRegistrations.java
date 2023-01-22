@@ -20,11 +20,14 @@ import java.util.List;
 @Configuration
 public class SecurityConfigManualClientRegistrations {
 
-    @Value("${security.manual.client.registration.clientId}")
+    @Value("${security.manual.client.github.registration.clientId}")
     private String githubClientId;
 
-    @Value("${security.manual.client.registration.clientSecret}")
+    @Value("${security.manual.client.github.registration.clientSecret}")
     private String githubClientSecret;
+
+    @Value("${security.manual.client.keycloak.registration.clientId}")
+    private String keycloakClientId;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -40,9 +43,23 @@ public class SecurityConfigManualClientRegistrations {
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository() {
         List<ClientRegistration> clientRegistrations = List.of(
-                manualGithubClientRegistration(),
-                commonGithubClientRegistration());
+                keycloakClientRegistration(),
+                manualGithubClientRegistration());
         return new InMemoryClientRegistrationRepository(clientRegistrations);
+    }
+
+    private ClientRegistration keycloakClientRegistration() {
+        return ClientRegistration.withRegistrationId("keycloak") // whatever id you want. just has to be unique
+                .clientId(keycloakClientId)
+                // .clientSecret(keycloakClientSecret) // Keycloak has the option to not use a password
+                .authorizationUri("http://localhost:8080/auth/realms/online-shopping-products-management/protocol/openid-connect/auth")
+                .tokenUri("http://localhost:8080/auth/realms/online-shopping-products-management/protocol/openid-connect/token")
+                .userInfoUri("http://localhost:8080/auth/realms/online-shopping-products-management/protocol/openid-connect/userinfo")
+                .userNameAttributeName("id")
+                .clientName("Manual Keycloak")
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .redirectUri("{baseUrl}/{action}/oauth2/code/{registrationId}")
+                .build();
     }
 
     // This is the same as the commonGithubClientRegistration, and it is used as an example on hot to set
