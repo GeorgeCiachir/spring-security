@@ -1,0 +1,76 @@
+# For the code flow with Keycloak we also need to create the code_verifier and code_challenge
+# Documentation here: https://www.rfc-editor.org/rfc/rfc7636#section-4
+
+# We can do it using the code_challenge_method "plain" or "S256"
+# Depending on which method is used, the code_challenge has a different value:
+#     plain -> code_challenge = code_verifier
+#     S256 -> code_challenge = BASE64URL-ENCODE(SHA256(ASCII(code_verifier)))
+# You can use an online tool to generate the code_verifier and code_challenge -> https://developer.pingidentity.com/en/tools/pkce-code-generator.html
+
+
+// @no-redirect
+
+< {%
+ S256Verifier = "lvtWiVdbDYGmrIGAx43ycnVWPwE2I8JWbRR16UGRGI9pInKIlVQy64qzirS8AzGKvqdhDw0sPZo6OK8ku7EbfATI9QCwqnE6Mzc8DTcU7A";
+ plainVerifier = "ZfZx5x-P6qkUeJof_UDFD_cVKMiQhhDHGVeq6_A8SwE";
+
+ codeChallengeMethod="S256";
+ codeVerifier = "S256" === codeChallengeMethod ? S256Verifier : plainVerifier;
+ client.global.set("codeVerifier", codeVerifier);
+ client.log("codeChallengeMethod is: " + codeChallengeMethod)
+ client.log("codeVerifier is: " + codeVerifier)
+ request.variables.set("code_challenge_method", codeChallengeMethod);
+ %}
+
+
+GET http://localhost:{{authServerPort}}/auth/realms/online-shopping-products-management/protocol/openid-connect/auth
+    ?response_type=code
+    &client_id=product-management-backend
+    &scope=product-management-backend
+    &state=mDMaiurBQFxGvd3aB-oIjMBPPWQu3PzK39ZMZYejnws%3D
+    &redirect_uri=http://localhost:9090/login/oauth2/code/keycloak
+    &code_challenge={{code_challenge}}
+    &code_challenge_method={{code_challenge_method}}
+
+> {%
+loginUrl = response.body.match('action="(.*?)"')[1];
+loginUrl = loginUrl.replace('amp;','').replace('amp;','').replace('amp;','');
+client.log('loginUrl is: ' +  loginUrl);
+client.global.set("loginUrl", loginUrl);
+ %}
+
+###
+
+// @no-redirect
+POST {{loginUrl}}
+Content-Type: application/x-www-form-urlencoded
+
+username={{username}}&password={{password}}
+
+> {%
+const redirect = response.headers.valueOf("Location");
+client.log('redirect: ' +  redirect);
+client.global.set("redirect", redirect);
+
+code = redirect.match('code=(.*)')[1];
+client.log('code: ' +  code);
+client.global.set("code", code);
+ %}
+
+###
+
+// @name The client now requests the access token
+// @no-redirect
+POST http://localhost:{{authServerPort}}/auth/realms/online-shopping-products-management/protocol/openid-connect/token
+     ?scope=product-management-backend
+Content-Type: application/x-www-form-urlencoded
+
+code_verifier={{codeVerifier}}&client_id=product-management-backend&grant_type=authorization_code&code={{code}}&redirect_uri=http://localhost:9090/login/oauth2/code/keycloak
+
+> {%
+    codeVerifier = client.global.get("codeVerifier");
+    client.log('codeVerifier: ' + codeVerifier);
+const accessToken = response.body.access_token;
+client.log('accessToken is: ' +  accessToken);
+client.global.set("accessToken", accessToken);
+ %}
