@@ -11,7 +11,7 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import java.util.List;
 
 @Configuration
-public class Clients {
+public class AppRegistrations {
 
     @Value("${security.keycloak.client.registration.client-id}")
     private String keycloakClientId;
