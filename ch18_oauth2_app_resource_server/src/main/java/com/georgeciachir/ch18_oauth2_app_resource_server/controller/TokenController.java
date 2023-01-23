@@ -18,15 +18,16 @@ public class TokenController {
         String username;
         String message;
 
-        if (principal instanceof Jwt) {
-            Jwt jwt = (Jwt) principal;
+        if (principal instanceof Jwt jwt) {
             username = String.valueOf(jwt.getClaims().get("user_name"));
             message = "The token is: " + jwt.getTokenValue();
-        } else {
-            DefaultOAuth2User oAuth2User = (DefaultOAuth2User) principal;
+        } else if (principal instanceof DefaultOAuth2User oAuth2User) {
             username = oAuth2User.getAttribute("user_name");
             WebAuthenticationDetails details = (WebAuthenticationDetails) authentication.getDetails();
             message = "No token used. Session id is: " + details.getSessionId();
+        } else {
+            username = "Could not extract username info based on the used authentication type";
+            message = "Could not create message based on the used authentication type";
         }
 
         return createHtml(username, message);
