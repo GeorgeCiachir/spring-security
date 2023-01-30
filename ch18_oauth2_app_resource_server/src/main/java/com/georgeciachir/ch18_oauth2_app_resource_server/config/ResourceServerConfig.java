@@ -16,6 +16,8 @@ import org.springframework.security.oauth2.jwt.JwtClaimValidator;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.List;
@@ -40,14 +42,21 @@ public class ResourceServerConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.oauth2Login()
-                .clientRegistrationRepository(clientRegistrationRepository)
+        return http
+                    .oauth2Login()
+                    .clientRegistrationRepository(clientRegistrationRepository)
                 .and()
-                .authorizeHttpRequests()
-                .requestMatchers(HttpMethod.DELETE, "/**").hasAuthority("imperial-admin")
-                .anyRequest().authenticated()
+                    .authorizeHttpRequests()
+                    .requestMatchers(HttpMethod.DELETE, "/**").hasRole("imperial-admin")
+                    .anyRequest().authenticated()
                 .and()
-                .oauth2ResourceServer(rsc -> rsc.jwt(jwt -> jwt.jwkSetUri(urlJwk).decoder(jwtDecoder())))
+                    .oauth2ResourceServer()
+                        .jwt()
+                        .jwkSetUri(urlJwk)
+                        .decoder(jwtDecoder())
+                        .jwtAuthenticationConverter(myJwtAuthenticationConverter())
+                    .and()
+                .and()
                 .build();
     }
 
@@ -69,5 +78,21 @@ public class ResourceServerConfig {
     @Bean
     public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
         return new SecurityEvaluationContextExtension();
+    }
+
+    @Bean
+    public JwtAuthenticationConverter myJwtAuthenticationConverter() {
+        JwtAuthenticationConverter authConverter = new JwtAuthenticationConverter();
+        authConverter.setPrincipalClaimName("user_name");
+        authConverter.setJwtGrantedAuthoritiesConverter(myJwtGrantedAuthoritiesConverter());
+        return authConverter;
+    }
+
+    @Bean
+    public JwtGrantedAuthoritiesConverter myJwtGrantedAuthoritiesConverter() {
+        JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
+        authoritiesConverter.setAuthoritiesClaimName("authorities");
+        authoritiesConverter.setAuthorityPrefix("ROLE_");
+        return authoritiesConverter;
     }
 }

@@ -17,9 +17,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findAllByOwner();
 
 
-    @PreAuthorize(
-            "#product.getOwner().equals(authentication.getName()) and " +
-                    "#oauth2.hasScope('product-management-backend')")
+    @PreAuthorize("#product.getOwner().equals(authentication.getName())")
     @Override
     Product save(Product product);
 }
