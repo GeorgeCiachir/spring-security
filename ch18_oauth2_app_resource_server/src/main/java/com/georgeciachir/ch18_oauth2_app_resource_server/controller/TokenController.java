@@ -15,14 +15,12 @@ public class TokenController {
     @GetMapping
     public String main(Authentication authentication) {
         Object principal = authentication.getPrincipal();
-        String username;
+        String username = authentication.getName();
         String message;
 
         if (principal instanceof Jwt jwt) {
-            username = String.valueOf(jwt.getClaims().get("user_name"));
             message = "The token is: " + jwt.getTokenValue();
-        } else if (principal instanceof DefaultOAuth2User oAuth2User) {
-            username = oAuth2User.getAttribute("user_name");
+        } else if (principal instanceof DefaultOAuth2User) {
             WebAuthenticationDetails details = (WebAuthenticationDetails) authentication.getDetails();
             message = "No token used. Session id is: " + details.getSessionId();
         } else {
