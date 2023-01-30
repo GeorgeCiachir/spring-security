@@ -7,6 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +22,10 @@ public class ProductService {
 
     public List<Product> findProductsForLoggedUser() {
         return productRepository.findAllByOwner();
+    }
+
+    public Optional<Product> findById(Integer id) {
+        return productRepository.findById(id);
     }
 
     public void deleteProduct(int id) {

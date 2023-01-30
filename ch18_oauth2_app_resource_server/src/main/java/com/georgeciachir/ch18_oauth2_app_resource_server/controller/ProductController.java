@@ -3,6 +3,8 @@ package com.georgeciachir.ch18_oauth2_app_resource_server.controller;
 import com.georgeciachir.ch18_oauth2_app_resource_server.entity.Product;
 import com.georgeciachir.ch18_oauth2_app_resource_server.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,8 +32,19 @@ public class ProductController {
         return productService.findProductsForLoggedUser();
     }
 
+    @PreAuthorize(
+            "hasRole('imperial-admin') or " +
+            "(hasPermission('delete-product') and @productController.isOwnProduct(#id, authentication))")
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable int id) {
         productService.deleteProduct(id);
+    }
+
+    public boolean isOwnProduct(Integer id, Authentication authentication) {
+        String username = authentication.name();
+        return productService.findById(id)
+                .map(Product::getName)
+                .filter(username::equals)
+                .isPresent();
     }
 }
