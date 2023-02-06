@@ -7,7 +7,7 @@
 # S256 -> code_challenge = BASE64URL-ENCODE(SHA256(ASCII(code_verifier)))
 # You can use an online tool to generate the code_verifier and code_challenge -> https://developer.pingidentity.com/en/tools/pkce-code-generator.html
 
-// @name Start the code flow
+// @name 1. Start the code flow
 // @no-redirect
 
 < {%
@@ -40,7 +40,7 @@ GET {{keycloakBaseUrl}}/auth
 
 ###
 
-// @name User login
+// @name 2. User login
 // @no-redirect
 POST {{loginUrl}}
 Content-Type: application/x-www-form-urlencoded
@@ -59,7 +59,7 @@ username={{keycloakUsername}}&password={{keycloakUserPassword}}
 
 ###
 
-// @name Request the access token
+// @name 3. Request the access token
 // @no-redirect
 POST {{keycloakBaseUrl}}/token
 Content-Type: application/x-www-form-urlencoded
@@ -76,7 +76,7 @@ code_verifier={{codeVerifier}}&client_id={{keycloakClientId}}&grant_type=authori
 
 ###
 
-// @name Get the user info
+// @name 4. Get the user info
 GET {{keycloakBaseUrl}}/userinfo
 Content-Type: application/x-www-form-urlencoded
 Authorization: Bearer {{accessToken}}
