@@ -25,16 +25,22 @@ public class AppRegistrations {
     @Value("${security.manual.client.github.registration.clientSecret}")
     private String githubClientSecret;
 
+    @Value("${security.auth0.client.registration.client-id}")
+    private String auth0ClientId;
+
+    @Value("${security.auth0.client.registration.client-secret}")
+    private String auth0ClientSecret;
 
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository() {
         List<ClientRegistration> clientRegistrations = List.of(
                 keycloakClientRegistration(),
-                manualGithubClientRegistration());
+                auth0ClientRegistration(),
+                githubClientRegistration());
         return new InMemoryClientRegistrationRepository(clientRegistrations);
     }
 
-    private ClientRegistration manualGithubClientRegistration() {
+    private ClientRegistration githubClientRegistration() {
         return ClientRegistration.withRegistrationId("githubManual") // whatever id you want. just has to be unique
                 .clientId(githubClientId)
                 .clientSecret(githubClientSecret)
@@ -45,7 +51,7 @@ public class AppRegistrations {
                 .tokenUri("https://github.com/login/oauth/access_token")
                 .userInfoUri("https://api.github.com/user")
                 .userNameAttributeName("login")
-                .clientName("Manual GitHub")
+                .clientName("GitHub")
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .redirectUri("{baseUrl}/{action}/oauth2/code/{registrationId}")
                 .build();
@@ -55,12 +61,31 @@ public class AppRegistrations {
         return ClientRegistration.withRegistrationId("keycloak") // whatever id you want. just has to be unique
                 .clientId(keycloakClientId)
                 .clientSecret(keycloakClientSecret)
-                .scope("product-management-backend")
+                .scope("product-management-backend", "openid", "profile")
                 .authorizationUri("http://localhost:8080/auth/realms/online-shopping-products-management/protocol/openid-connect/auth")
                 .tokenUri("http://localhost:8080/auth/realms/online-shopping-products-management/protocol/openid-connect/token")
                 .userInfoUri("http://localhost:8080/auth/realms/online-shopping-products-management/protocol/openid-connect/userinfo")
+                // required for signature verifier if the userinfo endpoint is not used -> in case of openid scope
+                .jwkSetUri("http://localhost:8080/auth/realms/online-shopping-products-management/protocol/openid-connect/certs")
                 .userNameAttributeName("user_name")
-                .clientName("Manual Keycloak")
+                .clientName("Keycloak")
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .redirectUri("{baseUrl}/{action}/oauth2/code/{registrationId}")
+                .build();
+    }
+
+    private ClientRegistration auth0ClientRegistration() {
+        return ClientRegistration.withRegistrationId("auth0") // whatever id you want. just has to be unique
+                .clientId(auth0ClientId)
+                .clientSecret(auth0ClientSecret)
+                .scope("openid", "profile")
+                .authorizationUri("https://product-management-backend.eu.auth0.com/authorize?audience=product-management-backend")
+                .tokenUri("https://product-management-backend.eu.auth0.com/oauth/token")
+                .userInfoUri("https://product-management-backend.eu.auth0.com/userinfo")
+                // required for signature verifier if the userinfo endpoint is not used -> in case of openid scope
+                .jwkSetUri("https://product-management-backend.eu.auth0.com/.well-known/jwks.json")
+                .userNameAttributeName("nickname")
+                .clientName("Auth0")
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .redirectUri("{baseUrl}/{action}/oauth2/code/{registrationId}")
                 .build();
