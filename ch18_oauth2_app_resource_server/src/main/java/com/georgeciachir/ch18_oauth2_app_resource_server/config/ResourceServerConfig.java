@@ -17,17 +17,26 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class ResourceServerConfig {
 
-    @Value("${jwk.key-uri}")
+    @Value("${security.keycloak.jwk.key.uri}")
     private String keycloakUrlJwk;
 
     @Autowired
     private JwtDecoder keycloakJwtDecoder;
 
     @Autowired
-    private ClientRegistrationRepository clientRegistrationRepository;
+    private JwtAuthenticationConverter keycloakJwtAuthenticationConverter;
+
+    @Value("${security.auth0.jwk.key.uri}")
+    private String auth0UrlJwk;
 
     @Autowired
-    private JwtAuthenticationConverter keycloakJwtAuthenticationConverter;
+    private JwtDecoder auth0JwtDecoder;
+
+    @Autowired
+    private JwtAuthenticationConverter auth0JwtAuthenticationConverter;
+
+    @Autowired
+    private ClientRegistrationRepository clientRegistrationRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -43,9 +52,12 @@ public class ResourceServerConfig {
                     // and will extract this into the KeycloakResourceServerConfig
                     .oauth2ResourceServer()
                         .jwt()
-                        .jwkSetUri(keycloakUrlJwk)
-                        .decoder(keycloakJwtDecoder)
-                        .jwtAuthenticationConverter(keycloakJwtAuthenticationConverter)
+                        .jwkSetUri(auth0UrlJwk)
+                        .decoder(auth0JwtDecoder)
+                        .jwtAuthenticationConverter(auth0JwtAuthenticationConverter)
+//                        .jwkSetUri(keycloakUrlJwk)
+//                        .decoder(keycloakJwtDecoder)
+//                        .jwtAuthenticationConverter(keycloakJwtAuthenticationConverter)
                     .and()
                 .and()
                 .build();
