@@ -1,6 +1,6 @@
 package com.georgeciachir.ch18_oauth2_app_resource_server.config;
 
-import com.georgeciachir.ch18_oauth2_app_resource_server.config.authserver.AuthServerConfig;
+import com.georgeciachir.ch18_oauth2_app_resource_server.config.authserver.JwtConfig;
 import com.georgeciachir.ch18_oauth2_app_resource_server.config.authserver.TrustedIssuerJwtAuthenticationManagerResolver;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +20,10 @@ import org.springframework.security.web.SecurityFilterChain;
 public class ResourceServerConfig {
 
     @Autowired
-    private AuthServerConfig keycloakJwtConfig;
+    private JwtConfig keycloakJwtConfig;
 
     @Autowired
-    private AuthServerConfig auth0JwtConfig;
+    private JwtConfig auth0JwtConfig;
 
     @Autowired
     private ClientRegistrationRepository clientRegistrationRepository;
@@ -48,12 +48,12 @@ public class ResourceServerConfig {
                         // So, for the app to be able to decode JWTs from multiple issuers, the authenticationManagerResolver can be used
                         .authenticationManagerResolver(authenticationManagerResolver())
 //                        .jwt()
-//                            .jwkSetUri(auth0JwtConfig.jwkUrl())
-//                            .decoder(auth0JwtConfig.jwtDecoder())
-//                            .jwtAuthenticationConverter(auth0JwtConfig.jwtAuthenticationConverter())
-//                            .jwkSetUri(keycloakJwtConfig.jwkUrl())
-//                            .decoder(keycloakJwtConfig.jwtDecoder())
-//                            .jwtAuthenticationConverter(keycloakJwtConfig.jwtAuthenticationConverter())
+//                            .jwkSetUri(auth0JwtConfig.getJwtDecodingData().jwkUrl())
+//                            .decoder(auth0JwtConfig.getJwtDecodingData().jwtDecoder())
+//                            .jwtAuthenticationConverter(auth0JwtConfig.getJwtDecodingData().jwtAuthenticationConverter())
+//                            .jwkSetUri(keycloakJwtConfig.getJwtDecodingData().jwkUrl())
+//                            .decoder(keycloakJwtConfig.getJwtDecodingData().jwtDecoder())
+//                            .jwtAuthenticationConverter(keycloakJwtConfig.getJwtDecodingData().jwtAuthenticationConverter())
 //                        .and()
                 .and()
                 .build();

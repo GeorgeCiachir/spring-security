@@ -2,8 +2,6 @@ package com.georgeciachir.ch18_oauth2_app_resource_server.config.authserver;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -12,41 +10,45 @@ import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
+import org.springframework.stereotype.Component;
 
-@Configuration
-public class KeycloakSpecificConfig {
+@Component
+public class Auth0JwtConfig implements JwtConfig {
 
-    @Value("${security.keycloak.base.url}")
-    private String keycloakBaseUrl;
+    @Value("${security.auth0.base.url}")
+    private String auth0BaseUrl;
 
-    @Value("${security.keycloak.jwk.key.uri}")
-    private String keycloakUrlJwk;
+    @Value("${security.auth0.jwk.key.uri}")
+    private String auth0UrlJwk;
 
     @Autowired
     private OAuth2TokenValidator<Jwt> audienceValidator;
 
-    @Bean
-    public AuthServerConfig keycloakJwtConfig() {
-        return new AuthServerConfig(keycloakJwtDecoder(), keycloakJwtAuthenticationConverter(), keycloakBaseUrl, keycloakUrlJwk);
+    public JwtDecodingData getJwtDecodingData() {
+        return new JwtDecodingData(auth0JwtDecoder(), auth0JwtAuthenticationConverter(), auth0UrlJwk);
     }
 
-    public JwtAuthenticationConverter keycloakJwtAuthenticationConverter() {
+    public String getIssuerUrl() {
+        return auth0BaseUrl;
+    }
+
+    public JwtAuthenticationConverter auth0JwtAuthenticationConverter() {
         JwtAuthenticationConverter authConverter = new JwtAuthenticationConverter();
         authConverter.setPrincipalClaimName("user_name");
-        authConverter.setJwtGrantedAuthoritiesConverter(keycloakJwtGrantedAuthoritiesConverter());
+        authConverter.setJwtGrantedAuthoritiesConverter(auth0JwtGrantedAuthoritiesConverter());
         return authConverter;
     }
 
-    public JwtGrantedAuthoritiesConverter keycloakJwtGrantedAuthoritiesConverter() {
+    public JwtGrantedAuthoritiesConverter auth0JwtGrantedAuthoritiesConverter() {
         JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        authoritiesConverter.setAuthoritiesClaimName("authorities");
+        authoritiesConverter.setAuthoritiesClaimName("permissions");
         authoritiesConverter.setAuthorityPrefix("ROLE_");
         return authoritiesConverter;
     }
 
-    public JwtDecoder keycloakJwtDecoder() {
+    public JwtDecoder auth0JwtDecoder() {
         OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(audienceValidator);
-        NimbusJwtDecoder jwtDecoder = JwtDecoders.fromIssuerLocation(keycloakBaseUrl);
+        NimbusJwtDecoder jwtDecoder = JwtDecoders.fromIssuerLocation(auth0BaseUrl);
         jwtDecoder.setJwtValidator(validator);
 
         return jwtDecoder;

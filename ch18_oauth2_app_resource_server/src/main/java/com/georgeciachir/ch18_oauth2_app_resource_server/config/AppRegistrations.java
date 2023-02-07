@@ -1,7 +1,7 @@
 package com.georgeciachir.ch18_oauth2_app_resource_server.config;
 
-import com.georgeciachir.ch18_oauth2_app_resource_server.config.authserver.Auth0SpecificConfig;
-import com.georgeciachir.ch18_oauth2_app_resource_server.config.authserver.KeycloakSpecificConfig;
+import com.georgeciachir.ch18_oauth2_app_resource_server.config.authserver.Auth0JwtConfig;
+import com.georgeciachir.ch18_oauth2_app_resource_server.config.authserver.KeycloakJwtConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,7 +55,7 @@ import java.util.List;
  * <p>
  * Since I mentioned the authentication providers... When the client makes a request with a valid JWT,
  * the {@link JwtAuthenticationProvider} is used for authentication. For decoding the JWT, that one uses the components
- * configured in on of the auth server specific config classes: {@link Auth0SpecificConfig} or {@link KeycloakSpecificConfig}.
+ * configured in on of the auth server specific config classes: {@link Auth0JwtConfig} or {@link KeycloakJwtConfig}.
  */
 @Configuration
 public class AppRegistrations {
