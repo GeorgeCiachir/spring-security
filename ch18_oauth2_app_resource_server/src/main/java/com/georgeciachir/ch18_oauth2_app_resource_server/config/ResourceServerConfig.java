@@ -1,45 +1,39 @@
 package com.georgeciachir.ch18_oauth2_app_resource_server.config;
 
+import com.georgeciachir.ch18_oauth2_app_resource_server.config.authserver.AuthServerConfig;
+import com.georgeciachir.ch18_oauth2_app_resource_server.config.authserver.TrustedIssuerJwtAuthenticationManagerResolver;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManagerResolver;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtIssuerAuthenticationManagerResolver;
 import org.springframework.security.web.SecurityFilterChain;
 
 @EnableMethodSecurity
 @Configuration
 public class ResourceServerConfig {
 
-    @Value("${security.keycloak.jwk.key.uri}")
-    private String keycloakUrlJwk;
+    @Autowired
+    private AuthServerConfig keycloakJwtConfig;
 
     @Autowired
-    private JwtDecoder keycloakJwtDecoder;
-
-    @Autowired
-    private JwtAuthenticationConverter keycloakJwtAuthenticationConverter;
-
-    @Value("${security.auth0.jwk.key.uri}")
-    private String auth0UrlJwk;
-
-    @Autowired
-    private JwtDecoder auth0JwtDecoder;
-
-    @Autowired
-    private JwtAuthenticationConverter auth0JwtAuthenticationConverter;
+    private AuthServerConfig auth0JwtConfig;
 
     @Autowired
     private ClientRegistrationRepository clientRegistrationRepository;
 
+    @Autowired
+    private TrustedIssuerJwtAuthenticationManagerResolver authenticationManagerResolver;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         return http
                     .oauth2Login()
                     .clientRegistrationRepository(clientRegistrationRepository)
@@ -48,19 +42,26 @@ public class ResourceServerConfig {
                     .requestMatchers(HttpMethod.DELETE, "/**").hasRole("imperial-admin")
                     .anyRequest().authenticated()
                 .and()
-                    // will replace this with a custom JwtIssuerAuthenticationManagerResolver, based on the token issuer
-                    // and will extract this into the KeycloakResourceServerConfig
                     .oauth2ResourceServer()
-                        .jwt()
-                        .jwkSetUri(auth0UrlJwk)
-                        .decoder(auth0JwtDecoder)
-                        .jwtAuthenticationConverter(auth0JwtAuthenticationConverter)
-//                        .jwkSetUri(keycloakUrlJwk)
-//                        .decoder(keycloakJwtDecoder)
-//                        .jwtAuthenticationConverter(keycloakJwtAuthenticationConverter)
-                    .and()
+                        // You can use either the authenticationManagerResolver or the jwt config
+                        // The jwt config is not "additive" and does not accept multiple decoders and converters
+                        // So, for the app to be able to decode JWTs from multiple issuers, the authenticationManagerResolver can be used
+                        .authenticationManagerResolver(authenticationManagerResolver())
+//                        .jwt()
+//                            .jwkSetUri(auth0JwtConfig.jwkUrl())
+//                            .decoder(auth0JwtConfig.jwtDecoder())
+//                            .jwtAuthenticationConverter(auth0JwtConfig.jwtAuthenticationConverter())
+//                            .jwkSetUri(keycloakJwtConfig.jwkUrl())
+//                            .decoder(keycloakJwtConfig.jwtDecoder())
+//                            .jwtAuthenticationConverter(keycloakJwtConfig.jwtAuthenticationConverter())
+//                        .and()
                 .and()
                 .build();
+    }
+
+    @Bean
+    public AuthenticationManagerResolver<HttpServletRequest> authenticationManagerResolver() {
+        return new JwtIssuerAuthenticationManagerResolver(authenticationManagerResolver);
     }
 
     // Required so that the expression used at the ProductRepository can be evaluated
