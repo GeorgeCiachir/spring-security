@@ -19,10 +19,17 @@ public class Auth0SpecificConfig {
     @Value("${security.auth0.base.url}")
     private String auth0BaseUrl;
 
+    @Value("${security.auth0.jwk.key.uri}")
+    private String auth0UrlJwk;
+
     @Autowired
     private OAuth2TokenValidator<Jwt> audienceValidator;
 
     @Bean
+    public AuthServerConfig auth0JwtConfig() {
+        return new AuthServerConfig(auth0JwtDecoder(), auth0JwtAuthenticationConverter(), auth0BaseUrl, auth0UrlJwk);
+    }
+
     public JwtAuthenticationConverter auth0JwtAuthenticationConverter() {
         JwtAuthenticationConverter authConverter = new JwtAuthenticationConverter();
         authConverter.setPrincipalClaimName("user_name");
@@ -30,7 +37,6 @@ public class Auth0SpecificConfig {
         return authConverter;
     }
 
-    @Bean
     public JwtGrantedAuthoritiesConverter auth0JwtGrantedAuthoritiesConverter() {
         JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
         authoritiesConverter.setAuthoritiesClaimName("permissions");
@@ -38,7 +44,6 @@ public class Auth0SpecificConfig {
         return authoritiesConverter;
     }
 
-    @Bean
     public JwtDecoder auth0JwtDecoder() {
         OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(audienceValidator);
         NimbusJwtDecoder jwtDecoder = JwtDecoders.fromIssuerLocation(auth0BaseUrl);

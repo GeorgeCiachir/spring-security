@@ -19,10 +19,17 @@ public class KeycloakSpecificConfig {
     @Value("${security.keycloak.base.url}")
     private String keycloakBaseUrl;
 
+    @Value("${security.keycloak.jwk.key.uri}")
+    private String keycloakUrlJwk;
+
     @Autowired
     private OAuth2TokenValidator<Jwt> audienceValidator;
 
     @Bean
+    public AuthServerConfig keycloakJwtConfig() {
+        return new AuthServerConfig(keycloakJwtDecoder(), keycloakJwtAuthenticationConverter(), keycloakBaseUrl, keycloakUrlJwk);
+    }
+
     public JwtAuthenticationConverter keycloakJwtAuthenticationConverter() {
         JwtAuthenticationConverter authConverter = new JwtAuthenticationConverter();
         authConverter.setPrincipalClaimName("user_name");
@@ -30,7 +37,6 @@ public class KeycloakSpecificConfig {
         return authConverter;
     }
 
-    @Bean
     public JwtGrantedAuthoritiesConverter keycloakJwtGrantedAuthoritiesConverter() {
         JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
         authoritiesConverter.setAuthoritiesClaimName("authorities");
@@ -38,7 +44,6 @@ public class KeycloakSpecificConfig {
         return authoritiesConverter;
     }
 
-    @Bean
     public JwtDecoder keycloakJwtDecoder() {
         OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(audienceValidator);
         NimbusJwtDecoder jwtDecoder = JwtDecoders.fromIssuerLocation(keycloakBaseUrl);
