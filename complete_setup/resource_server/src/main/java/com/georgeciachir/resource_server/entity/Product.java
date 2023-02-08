@@ -1,4 +1,4 @@
-package com.georgeciachir.ch18_oauth2_app_resource_server.entity;
+package com.georgeciachir.resource_server.entity;
 
 
 import jakarta.persistence.Entity;

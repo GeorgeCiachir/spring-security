@@ -1,7 +1,7 @@
-package com.georgeciachir.ch18_oauth2_app_resource_server.service;
+package com.georgeciachir.resource_server.service;
 
-import com.georgeciachir.ch18_oauth2_app_resource_server.entity.Product;
-import com.georgeciachir.ch18_oauth2_app_resource_server.repository.ProductRepository;
+import com.georgeciachir.resource_server.entity.Product;
+import com.georgeciachir.resource_server.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;

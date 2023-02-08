@@ -1,7 +1,7 @@
-package com.georgeciachir.ch18_oauth2_app_resource_server.config;
+package com.georgeciachir.resource_server.config;
 
-import com.georgeciachir.ch18_oauth2_app_resource_server.config.authserver.Auth0JwtConfig;
-import com.georgeciachir.ch18_oauth2_app_resource_server.config.authserver.KeycloakJwtConfig;
+import com.georgeciachir.resource_server.config.authserver.Auth0JwtConfig;
+import com.georgeciachir.resource_server.config.authserver.KeycloakJwtConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

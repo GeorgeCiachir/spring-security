@@ -1,7 +1,7 @@
-package com.georgeciachir.ch18_oauth2_app_resource_server.config;
+package com.georgeciachir.resource_server.config;
 
-import com.georgeciachir.ch18_oauth2_app_resource_server.config.authserver.JwtConfig;
-import com.georgeciachir.ch18_oauth2_app_resource_server.config.authserver.TrustedIssuerJwtAuthenticationManagerResolver;
+import com.georgeciachir.resource_server.config.authserver.JwtConfig;
+import com.georgeciachir.resource_server.config.authserver.TrustedIssuerJwtAuthenticationManagerResolver;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

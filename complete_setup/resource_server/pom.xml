@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>com.georgeciachir</groupId>
-    <artifactId>complete_setup</artifactId>
+    <artifactId>resource_server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>

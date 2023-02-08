@@ -1,4 +1,4 @@
-package com.georgeciachir.ch18_oauth2_app_resource_server.config.authserver;
+package com.georgeciachir.resource_server.config.authserver;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

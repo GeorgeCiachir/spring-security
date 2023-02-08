@@ -1,4 +1,4 @@
-package com.georgeciachir.ch18_oauth2_app_resource_server.controller;
+package com.georgeciachir.resource_server.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;

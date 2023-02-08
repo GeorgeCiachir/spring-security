@@ -1,13 +1,13 @@
-package com.georgeciachir.ch18_oauth2_app_resource_server;
+package com.georgeciachir.resource_server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Ch18Oauth2AppResourceServerApplication {
+public class ResourceServerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Ch18Oauth2AppResourceServerApplication.class, args);
+        SpringApplication.run(ResourceServerApplication.class, args);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.georgeciachir.ch18_oauth2_app_resource_server.config.authserver;
+package com.georgeciachir.resource_server.config.authserver;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

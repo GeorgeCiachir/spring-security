@@ -1,6 +1,6 @@
-package com.georgeciachir.ch18_oauth2_app_resource_server.repository;
+package com.georgeciachir.resource_server.repository;
 
-import com.georgeciachir.ch18_oauth2_app_resource_server.entity.Product;
+import com.georgeciachir.resource_server.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.access.prepost.PreAuthorize;

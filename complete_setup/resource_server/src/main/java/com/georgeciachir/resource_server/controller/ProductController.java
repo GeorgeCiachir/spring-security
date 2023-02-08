@@ -1,7 +1,7 @@
-package com.georgeciachir.ch18_oauth2_app_resource_server.controller;
+package com.georgeciachir.resource_server.controller;
 
-import com.georgeciachir.ch18_oauth2_app_resource_server.entity.Product;
-import com.georgeciachir.ch18_oauth2_app_resource_server.service.ProductService;
+import com.georgeciachir.resource_server.entity.Product;
+import com.georgeciachir.resource_server.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
