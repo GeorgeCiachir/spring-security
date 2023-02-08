@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>com.georgeciachir</groupId>
-    <artifactId>ch18_oauth2_app_resource_server</artifactId>
+    <artifactId>complete_setup</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
