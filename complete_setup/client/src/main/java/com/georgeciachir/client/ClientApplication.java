@@ -1,4 +1,4 @@
-package com.georgeciachir.resource_server_client;
+package com.georgeciachir.client;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,6 +1,6 @@
-package com.georgeciachir.resource_server_client.controller;
+package com.georgeciachir.client.controller;
 
-import com.georgeciachir.resource_server_client.service.HelloService;
+import com.georgeciachir.client.service.HelloService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

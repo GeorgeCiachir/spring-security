@@ -1,4 +1,4 @@
-package com.georgeciachir.resource_server_client.service;
+package com.georgeciachir.client.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

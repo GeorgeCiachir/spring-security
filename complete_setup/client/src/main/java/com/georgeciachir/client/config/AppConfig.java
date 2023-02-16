@@ -1,4 +1,4 @@
-package com.georgeciachir.resource_server_client.config;
+package com.georgeciachir.client.config;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
