@@ -17,7 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @EnableMethodSecurity
 @Configuration
-public class ResourceServerConfig {
+public class SecurityConfig {
 
     @Autowired
     private JwtConfig keycloakJwtConfig;
