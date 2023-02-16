@@ -37,12 +37,12 @@ public class TrustedIssuerJwtAuthenticationManagerResolver implements Authentica
             return null;
         }
 
-        AuthenticationManager authenticationManager = authenticationManagers.computeIfAbsent(issuer, this::contructAuthenticationManager);
+        AuthenticationManager authenticationManager = authenticationManagers.computeIfAbsent(issuer, this::constructAuthenticationManager);
         log.info("Resolved AuthenticationManager for issuer {}", issuer);
         return authenticationManager;
     }
 
-    private AuthenticationManager contructAuthenticationManager(String issuer) {
+    private AuthenticationManager constructAuthenticationManager(String issuer) {
         log.info("Constructing AuthenticationManager for: {}", issuer);
         JwtDecodingData jwtDecodingData = authConfigs.get(issuer).getJwtDecodingData();
         JwtDecoder decoder = jwtDecodingData.jwtDecoder();
