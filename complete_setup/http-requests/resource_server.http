@@ -1,4 +1,4 @@
 # First obtain a token using the code flow -> keycloack_get_jwt_code_flow.http
 
-GET http://localhost:{{resourceServerPort}}/token
+GET http://localhost:{{resourceServerPort}}/hello
 Authorization: Bearer {{accessToken}}
