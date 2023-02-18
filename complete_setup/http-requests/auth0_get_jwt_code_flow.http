@@ -25,7 +25,7 @@
 GET {{auth0BaseUrl}}/authorize
     ?response_type=code
     &client_id={{auth0ClientId}}
-    &redirect_uri=http://localhost:9090/login/oauth2/code/auth0
+    &redirect_uri=http://localhost:9091/login/oauth2/code/auth0
     &scope={{auth0Scopes}}
     &state={{state}}
     &audience={{audience}}
@@ -79,7 +79,7 @@ GET {{redirect}}
 POST https://product-management-backend.eu.auth0.com/oauth/token
 Content-Type: application/x-www-form-urlencoded
 
-code_verifier={{codeVerifier}}&client_id={{auth0ClientId}}&client_secret={{auth0ClientSecret}}&grant_type=authorization_code&code={{code}}&state={{state}}&redirect_uri=http://localhost:9090/login/oauth2/code/auth0
+code_verifier={{codeVerifier}}&client_id={{auth0ClientId}}&client_secret={{auth0ClientSecret}}&grant_type=authorization_code&code={{code}}&state={{state}}&redirect_uri=http://localhost:9091/login/oauth2/code/auth0
 
 > {%
     const accessToken = response.body.access_token;

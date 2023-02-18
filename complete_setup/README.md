@@ -1,3 +1,5 @@
+# High level project description
+
 This is a complete setup that includes the Client, the Resource server and several Authorization servers.
 The setup is simple:
 
@@ -19,3 +21,11 @@ Client login page:
 
 Resource server login page:
 ![resource_server_login_page.png](pics/resource_server_login_page.png)
+
+
+# Obtain JWTs using the authorization code flow
+
+In the [http-requests dir](http-requests) you can find some Intellij http requests flows that can be used to obtain the 
+JWT from all 3 auth servers using the authorization code flow with PKCE and one http requests file to call the resource server.
+
+# Keycloak setup
