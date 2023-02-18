@@ -1,0 +1,101 @@
+# For the code flow we also need to create the code_verifier and code_challenge
+# Documentation here: https://www.rfc-editor.org/rfc/rfc7636#section-4
+
+# We can do it using the code_challenge_method "plain" or "S256"
+# Depending on which method is used,
+# plain -> code_challenge = code_verifier
+# S256 -> code_challenge = BASE64URL-ENCODE(SHA256(ASCII(code_verifier)))
+# You can use an online tool to generate the code_verifier and code_challenge -> https://developer.pingidentity.com/en/tools/pkce-code-generator.html
+
+// @name 1. Start the code flow
+// @no-redirect
+
+< {%
+    S256Verifier = "lvtWiVdbDYGmrIGAx43ycnVWPwE2I8JWbRR16UGRGI9pInKIlVQy64qzirS8AzGKvqdhDw0sPZo6OK8ku7EbfATI9QCwqnE6Mzc8DTcU7A";
+    plainVerifier = "ZfZx5x-P6qkUeJof_UDFD_cVKMiQhhDHGVeq6_A8SwE";
+
+    codeChallengeMethod = "S256";
+    codeVerifier = "S256" === codeChallengeMethod ? S256Verifier : plainVerifier;
+    client.global.set("codeVerifier", codeVerifier);
+    client.log("codeChallengeMethod is: " + codeChallengeMethod)
+    client.log("codeVerifier is: " + codeVerifier)
+    request.variables.set("code_challenge_method", codeChallengeMethod);
+%}
+
+GET {{springAuthBaseUrl}}/oauth2/authorize
+    ?response_type=code
+    &client_id={{springAuthClientId}}
+    &scope={{springAuthScopes}}
+    &redirect_uri=http://127.0.0.1:9090/login/oauth2/code/spring-auth
+    &code_challenge={{code_challenge}}
+    &code_challenge_method=S256
+
+> {%
+    loginUrl = response.headers.valueOf("Location");
+    client.log('loginUrl is: ' + loginUrl);
+    client.global.set("loginUrl", loginUrl);
+%}
+
+###
+
+// @name 2. Go to the login page and get the _csrf token
+// @no-redirect
+GET {{loginUrl}}
+
+> {%
+csrf = response.body.match('value="(.*?)"')[1];
+client.log('csrf is: ' + csrf);
+client.global.set("csrf", csrf);
+%}
+
+###
+
+// @name 3. Post for login with the _csrf
+// @no-redirect
+POST {{loginUrl}}
+Content-Type: application/x-www-form-urlencoded
+
+username={{springAuthUsername}}&password={{springAuthUserPassword}}&_csrf={{csrf}}
+
+> {%
+const redirect = response.headers.valueOf("Location");
+client.log('redirect: ' + redirect);
+client.global.set("redirect", redirect);
+%}
+
+###
+
+// @name 4. Resume the code flow after user login and extract the code
+// @no-redirect
+GET {{redirect}}
+
+> {%
+const redirect = response.headers.valueOf("Location");
+code = redirect.match('code=(.*)')[1];
+client.log('code: ' + code);
+client.global.set("code", code);
+%}
+
+###
+
+// @name 5. Request the access token
+// @no-redirect
+# @no-cookie-jar
+POST {{springAuthBaseUrl}}/oauth2/token
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic {{springAuthClientId}} {{springAuthClientPassword}}
+
+client_id={{springAuthClientId}}&client_secret={{springAuthClientPassword}}&grant_type=authorization_code&code={{code}}&code_verifier={{codeVerifier}}&redirect_uri=http://127.0.0.1:9090/login/oauth2/code/spring-auth
+
+> {%
+    const accessToken = response.body.access_token;
+    client.log('accessToken is: ' + accessToken);
+    client.global.set("accessToken", accessToken);
+%}
+
+####
+
+// @name 6. Get the user info
+GET {{springAuthBaseUrl}}/userinfo
+Content-Type: application/x-www-form-urlencoded
+Authorization: Bearer {{accessToken}}
