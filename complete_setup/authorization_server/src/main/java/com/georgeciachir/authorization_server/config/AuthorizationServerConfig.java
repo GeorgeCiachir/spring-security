@@ -21,8 +21,10 @@ import org.springframework.security.oauth2.server.authorization.token.OAuth2Toke
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
+
+import static java.util.Arrays.stream;
 
 @Configuration
 public class AuthorizationServerConfig {
@@ -44,8 +46,10 @@ public class AuthorizationServerConfig {
             if (!(approvedAudience instanceof String audience)) {
                 return;
             }
-            List<String> aud = Arrays.stream(audience.split(",")).map(String::trim).toList();
-            context.getClaims().audience(aud).build();
+            String clientId = context.getRegisteredClient().getClientId();
+            List<String> aud = Stream.concat(Stream.of(clientId),stream(audience.split(",")))
+                    .map(String::trim).toList();
+            context.getClaims().audience(aud);
         };
     }
 
