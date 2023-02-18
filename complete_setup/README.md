@@ -32,3 +32,5 @@ JWT from all 3 auth servers using the authorization code flow with PKCE and one 
 [# GitHub setup](GitHubAuthSetup.md)
 
 [# Keycloak setup](KeycloakAuthSetup.md)
+
+[# Auth0 setup](Auth0AuthSetup.md)
