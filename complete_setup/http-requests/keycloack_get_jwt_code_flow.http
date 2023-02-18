@@ -27,7 +27,7 @@ GET {{keycloakBaseUrl}}/auth
     &client_id={{keycloakClientId}}
     &scope={{keycloakScopes}}
     &state={{state}}
-    &redirect_uri=http://localhost:9090/login/oauth2/code/keycloak
+    &redirect_uri=http://localhost:9091/login/oauth2/code/keycloak
     &code_challenge={{code_challenge}}
     &code_challenge_method={{code_challenge_method}}
 
@@ -64,7 +64,7 @@ username={{keycloakUsername}}&password={{keycloakUserPassword}}
 POST {{keycloakBaseUrl}}/token
 Content-Type: application/x-www-form-urlencoded
 
-code_verifier={{codeVerifier}}&client_id={{keycloakClientId}}&grant_type=authorization_code&code={{code}}&redirect_uri=http://localhost:9090/login/oauth2/code/keycloak
+code_verifier={{codeVerifier}}&client_id={{keycloakClientId}}&grant_type=authorization_code&code={{code}}&redirect_uri=http://localhost:9091/login/oauth2/code/keycloak
 
 > {%
     codeVerifier = client.global.get("codeVerifier");
