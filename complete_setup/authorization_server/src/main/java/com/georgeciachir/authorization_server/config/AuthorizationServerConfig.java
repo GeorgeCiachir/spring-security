@@ -42,6 +42,11 @@ public class AuthorizationServerConfig {
     @Bean
     public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
         return context -> {
+            // Need to find a way to differentiate between the access_token and the id_token,
+            // so that I can individually customize the claims.
+            // This customizer applies to both of them and although it might not be wrong to
+            // also add the clientId as a value in the aud claim for the access_token, it might not be needed.
+
             Object approvedAudience = context.getRegisteredClient().getClientSettings().getSetting("approvedAudiences");
             if (!(approvedAudience instanceof String audience)) {
                 return;
