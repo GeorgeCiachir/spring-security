@@ -15,6 +15,7 @@ For the authorization servers, I decided to:
 1. implement a Spring OAuth2 authorization server running on localhost:9092
 2. configure a Keycloak server locally, running on localhost:8080
 3. configure an Auth0 project at https://auth0.com/
+4. configure GitHub authentication
 
 Client login page:
 ![client_login_page.png](pics/client_login_page.png)
@@ -28,4 +29,16 @@ Resource server login page:
 In the [http-requests dir](http-requests) you can find some Intellij http requests flows that can be used to obtain the 
 JWT from all 3 auth servers using the authorization code flow with PKCE and one http requests file to call the resource server.
 
+# GitHub setup
+https://github.com/settings/developers
+![developer_page.png](pics/github/developer_page.png)
+![app_settings.png](pics/github/app_settings.png)
+
 # Keycloak setup
+
+For the RS I have also configured keycloak to use GitHub as third party provider
+![github_provider_config.png](pics/keycloak/github_provider_config.png)
+
+![keycloak_login.png](pics/keycloak/keycloak_login.png)
+
+![realm.png](pics/keycloak/realm.png)
