@@ -27,7 +27,7 @@ Resource server login page:
 # Obtain JWTs using the authorization code flow
 
 In the [http-requests dir](http-requests) you can find some Intellij http requests flows that can be used to obtain the 
-JWT from all 3 auth servers using the authorization code flow with PKCE and one http requests file to call the resource server.
+JWT from 3 of the auth servers (GitHub not added) using the authorization code flow with PKCE and one http requests file to call the resource server.
 
 [# GitHub setup](GitHubAuthSetup.md)
 
