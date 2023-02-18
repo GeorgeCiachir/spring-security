@@ -174,7 +174,7 @@ public class AppRegistrations {
                 .jwkSetUri("http://localhost:9092/oauth2/jwks")
                 // This has been manually added to the claims in the auth server config
                 .userNameAttributeName("sub")
-                .clientName("Spring Oauth2")
+                .clientName("Spring OAuth2")
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .redirectUri("http://127.0.0.1:9090/{action}/oauth2/code/{registrationId}")
                 .build();
