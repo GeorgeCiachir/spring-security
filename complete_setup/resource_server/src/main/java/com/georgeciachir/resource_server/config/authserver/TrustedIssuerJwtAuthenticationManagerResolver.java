@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -22,12 +24,10 @@ public class TrustedIssuerJwtAuthenticationManagerResolver implements Authentica
     private final Map<String, AuthenticationManager> authenticationManagers = new ConcurrentHashMap<>();
 
     public TrustedIssuerJwtAuthenticationManagerResolver(@Value("${security.trusted.issuers}") List<String> trustedIssuers,
-                                                         KeycloakJwtConfig keycloakJwtConfig,
-                                                         Auth0JwtConfig auth0JwtConfig) {
+                                                         List<JwtConfig> jwtConfigs) {
         this.trustedIssuers = trustedIssuers;
-        authConfigs = Map.of(
-                keycloakJwtConfig.getIssuerUrl(), keycloakJwtConfig,
-                auth0JwtConfig.getIssuerUrl(), auth0JwtConfig);
+        authConfigs = jwtConfigs.stream()
+                .collect(Collectors.toMap(JwtConfig::getIssuerUrl, Function.identity()));
     }
 
     @Override

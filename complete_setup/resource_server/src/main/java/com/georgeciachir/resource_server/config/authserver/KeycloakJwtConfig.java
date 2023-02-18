@@ -24,10 +24,12 @@ public class KeycloakJwtConfig implements JwtConfig {
     @Autowired
     private OAuth2TokenValidator<Jwt> audienceValidator;
 
+    @Override
     public JwtDecodingData getJwtDecodingData() {
         return new JwtDecodingData(keycloakJwtDecoder(), keycloakJwtAuthenticationConverter(), keycloakUrlJwk);
     }
 
+    @Override
     public String getIssuerUrl() {
         return keycloakBaseUrl;
     }

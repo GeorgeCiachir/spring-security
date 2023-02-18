@@ -13,30 +13,30 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.stereotype.Component;
 
 @Component
-public class Auth0JwtConfig implements JwtConfig {
+public class SpringOauth2JwtConfig implements JwtConfig {
 
-    @Value("${security.auth0.base.url}")
-    private String auth0BaseUrl;
+    @Value("${security.spring.oauth2.base.url}")
+    private String springOAuth2BaseUrl;
 
-    @Value("${security.auth0.jwk.key.uri}")
-    private String auth0UrlJwk;
+    @Value("${security.spring.oauth2.jwk.key.uri}")
+    private String springOAuth2UrlJwk;
 
     @Autowired
     private OAuth2TokenValidator<Jwt> audienceValidator;
 
     @Override
     public JwtDecodingData getJwtDecodingData() {
-        return new JwtDecodingData(auth0JwtDecoder(), auth0JwtAuthenticationConverter(), auth0UrlJwk);
+        return new JwtDecodingData(springOAuth2JwtDecoder(), springOAuth2JwtAuthenticationConverter(), springOAuth2UrlJwk);
     }
 
     @Override
     public String getIssuerUrl() {
-        return auth0BaseUrl;
+        return springOAuth2BaseUrl;
     }
 
-    public JwtAuthenticationConverter auth0JwtAuthenticationConverter() {
+    public JwtAuthenticationConverter springOAuth2JwtAuthenticationConverter() {
         JwtAuthenticationConverter authConverter = new JwtAuthenticationConverter();
-        authConverter.setPrincipalClaimName("user_name");
+        authConverter.setPrincipalClaimName("sub");
         authConverter.setJwtGrantedAuthoritiesConverter(auth0JwtGrantedAuthoritiesConverter());
         return authConverter;
     }
@@ -48,9 +48,9 @@ public class Auth0JwtConfig implements JwtConfig {
         return authoritiesConverter;
     }
 
-    public JwtDecoder auth0JwtDecoder() {
+    public JwtDecoder springOAuth2JwtDecoder() {
         OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(audienceValidator);
-        NimbusJwtDecoder jwtDecoder = JwtDecoders.fromIssuerLocation(auth0BaseUrl);
+        NimbusJwtDecoder jwtDecoder = JwtDecoders.fromIssuerLocation(springOAuth2BaseUrl);
         jwtDecoder.setJwtValidator(validator);
 
         return jwtDecoder;
