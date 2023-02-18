@@ -59,6 +59,8 @@ For the RS I have also configured keycloak to use GitHub as third party provider
 
 ![define_a_client.png](pics/keycloak/define_a_client.png)
 
+![dont_forget_to_add_the_allowed_redirect_uris.png](pics/keycloak/dont_forget_to_add_the_allowed_redirect_uris.png)
+
 ![add_scopes_to_the_client.png](pics/keycloak/add_scopes_to_the_client.png)
 
 
