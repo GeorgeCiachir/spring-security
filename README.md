@@ -1,3 +1,9 @@
+# About the project
+
+[The last module (complete_setup)](complete_setup/README.md) is the most interesting, as it covers all the interactions between the actors (client, resource server and auth server).
+
+
+
 # Spring security
 
 Starting with Spring Security 5.7.0-M2 the WebSecurityConfigurerAdapter has been deprecated, and the Spring Security 
