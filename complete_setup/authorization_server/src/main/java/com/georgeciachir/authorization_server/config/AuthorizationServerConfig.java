@@ -42,20 +42,28 @@ public class AuthorizationServerConfig {
     @Bean
     public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
         return context -> {
-            // TODO: Need to find a way to differentiate between the access_token and the id_token
-            //  so that I can individually customize the claims.
-            //  This customizer applies to both of them and although it might not be wrong to
-            //  also add the clientId as a value in the aud claim for the access_token, it might not be needed.
-
             Object approvedAudience = context.getRegisteredClient().getClientSettings().getSetting("approvedAudiences");
             if (!(approvedAudience instanceof String audience)) {
                 return;
             }
-            String clientId = context.getRegisteredClient().getClientId();
-            List<String> aud = Stream.concat(Stream.of(clientId),stream(audience.split(",")))
-                    .map(String::trim).toList();
-            context.getClaims().audience(aud);
+            if (context.getTokenType().getValue().equals("access_token")) {
+                customizeAccessToken(context, audience);
+            } else if (context.getTokenType().getValue().equals("id_token")) {
+                customizeIdToken(context, audience);
+            }
         };
+    }
+
+    private void customizeAccessToken(JwtEncodingContext context, String approvedAudiences) {
+        List<String> aud = stream(approvedAudiences.split(",")).map(String::trim).toList();
+        context.getClaims().audience(aud);
+    }
+
+    private void customizeIdToken(JwtEncodingContext context, String approvedAudiences) {
+        String clientId = context.getRegisteredClient().getClientId();
+        List<String> aud = Stream.concat(Stream.of(clientId), stream(approvedAudiences.split(",")))
+                .map(String::trim).toList();
+        context.getClaims().audience(aud);
     }
 
     @Bean
